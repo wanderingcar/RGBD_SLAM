@@ -196,6 +196,35 @@ namespace RGBDSLAM
         glEnd();
     }
 
+    // Object Drawing
+
+    void Viewer::DrawObjects()
+    {
+
+        const float red[3] = {1.0, 0, 0};
+
+        glPointSize(2);
+        glBegin(GL_POINTS);
+        for (auto &landmark : map_->landmarks_)
+        {
+            auto pos = landmark.second->Pos();
+            auto rgb = landmark.second->rgb_;
+            glColor3f(rgb[0] / 255., rgb[1] / 255., rgb[2] / 255.);
+            glVertex3d(pos[0], pos[1], pos[2]);
+        }
+        glEnd();
+
+        glPointSize(2);
+        glBegin(GL_POINTS);
+        for (auto &landmark : map_->active_landmarks_)
+        {
+            auto pos = landmark.second->Pos();
+            glColor3f(red[0], red[1], red[2]);
+            glVertex3d(pos[0], pos[1], pos[2]);
+        }
+        glEnd();
+    }
+
     void Viewer::SpinOnce()
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -229,7 +258,7 @@ namespace RGBDSLAM
         cv::waitKey(1);
 
         DrawMapPoints();
-
+        DrawObjects();
         pangolin::FinishFrame();
     }
 

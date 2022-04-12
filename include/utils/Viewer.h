@@ -42,6 +42,7 @@ namespace RGBDSLAM
 
         void DrawTrajectory();
         void DrawMapPoints();
+        void DrawObjects();
 
         void FollowCurrentFrame(pangolin::OpenGlRenderState &vis_camera);
 
