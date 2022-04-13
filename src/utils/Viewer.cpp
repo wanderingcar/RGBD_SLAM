@@ -111,6 +111,76 @@ namespace RGBDSLAM
         glPopMatrix();
     }
 
+    void Viewer::DrawCuboid(RGBDSLAM::Object object, const float *color)
+    {
+        const float sz = 0.3;
+        const int line_width = 2.0;
+
+        glPushMatrix();
+        glMultMatrixf((GLfloat *)m.data());
+
+        if (color == nullptr)
+        {
+            glColor3f(1, 0, 0);
+        }
+        else
+            glColor3f(color[0], color[1], color[2]);
+
+        glLineWidth(line_width);
+        glBegin(GL_LINES);
+
+        std::vector<Vec3> p;
+        
+        p.emplace_back(Vec3((object.pos_[0]+object.dim_[0]/2.0f)*std::cos(object.yaw_),
+                            (object.pos_[1]+object.dim_[1]/2.0f)*std::sin(object.yaw_),
+                             object.pos_[2]+object.dim_[2]/2.0f)));
+        p.emplace_back(Vec3((object.pos_[0]-object.dim_[0]/2.0f)*std::cos(object.yaw_),
+                            (object.pos_[1]+object.dim_[1]/2.0f)*std::sin(object.yaw_),
+                             object.pos_[2]+object.dim_[2]/2.0f)));
+        p.emplace_back(Vec3((object.pos_[0]-object.dim_[0]/2.0f)*std::cos(object.yaw_),
+                            (object.pos_[1]-object.dim_[1]/2.0f)*std::sin(object.yaw_),
+                             object.pos_[2]+object.dim_[2]/2.0f)));
+        p.emplace_back(Vec3((object.pos_[0]+object.dim_[0]/2.0f)*std::cos(object.yaw_),
+                            (object.pos_[1]-object.dim_[1]/2.0f)*std::sin(object.yaw_),
+                             object.pos_[2]+object.dim_[2]/2.0f)));
+        p.emplace_back(Vec3((object.pos_[0]+object.dim_[0]/2.0f)*std::cos(object.yaw_),
+                            (object.pos_[1]+object.dim_[1]/2.0f)*std::sin(object.yaw_),
+                             object.pos_[2]-object.dim_[2]/2.0f)));
+        p.emplace_back(Vec3((object.pos_[0]-object.dim_[0]/2.0f)*std::cos(object.yaw_),
+                            (object.pos_[1]+object.dim_[1]/2.0f)*std::sin(object.yaw_),
+                             object.pos_[2]-object.dim_[2]/2.0f)));
+        p.emplace_back(Vec3((object.pos_[0]-object.dim_[0]/2.0f)*std::cos(object.yaw_),
+                            (object.pos_[1]-object.dim_[1]/2.0f)*std::sin(object.yaw_),
+                             object.pos_[2]-object.dim_[2]/2.0f))); 
+        p.emplace_back(Vec3((object.pos_[0]+object.dim_[0]/2.0f)*std::cos(object.yaw_),
+                            (object.pos_[1]-object.dim_[1]/2.0f)*std::sin(object.yaw_),
+                             object.pos_[2]-object.dim_[2]/2.0f)));                                         
+
+        glVertex3f(p[0]);
+        glVertex3f(p[1]);
+        glVertex3f(p[2]);
+        glVertex3f(p[3]);
+        glVertex3f(p[0]);
+
+        glVertex3f(p[4]);
+        glVertex3f(p[5]);
+        glVertex3f(p[6]);
+        glVertex3f(p[7]);
+        glVertex3f(p[4]);
+
+        glVertex3f(p[5]);
+        glVertex3f(p[1]);
+
+        glVertex3f(p[2]);
+        glVertex3f(p[6]);
+
+        glVertex3f(p[7]);
+        glVertex3f(p[3]);
+
+        glEnd();
+        glPopMatrix();
+    }
+
     void Viewer::DrawTrajectory()
     {
         const int line_width = 5.0;
