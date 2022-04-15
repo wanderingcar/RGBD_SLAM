@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 project(rgbd_slam)
 
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall")
 set(CMAKE_CXX_FLAGS_RELEASE  "-std=c++14 -O3 -fopenmp -pthread")
@@ -18,6 +18,7 @@ set( DBoW3_INCLUDE_DIRS "/usr/local/include" )
 set( DBoW3_LIBS "/usr/local/lib/libDBoW3.so" )
 
 include_directories(${DBoW3_INCLUDE_DIRS})
+include_directories("/home/cadit/libtorch/libtorch/include")
 
 
 # Eigen

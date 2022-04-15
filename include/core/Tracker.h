@@ -25,6 +25,7 @@
 #include "types/Feature.h"
 #include "types/Common.h"
 #include "types/Frame.h"
+#include "types/Object.h"
 #include "types/Map.h"
 
 namespace RGBDSLAM

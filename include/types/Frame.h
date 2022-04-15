@@ -7,6 +7,7 @@
 #include "types/Camera.h"
 #include "types/Feature.h"
 #include "types/MapPoint.h"
+#include "types/Object.h"
 #include "DBoW3/DBoW3.h"
 #include <opencv2/features2d.hpp>
 
@@ -22,6 +23,7 @@ namespace RGBDSLAM
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
         typedef std::shared_ptr<Frame> Ptr;
 
+        //std::string file_name_="";
         unsigned long id_ = 0;          // id of this frame
         unsigned long keyframe_id_ = 0; // id of key frame
         bool is_keyframe_ = false;      // is this frame keyframe?

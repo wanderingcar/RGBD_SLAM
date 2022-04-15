@@ -9,6 +9,7 @@ namespace RGBDSLAM
 
     struct Frame;
     struct Feature;
+    struct Object;
 
     struct MapPoint
     {

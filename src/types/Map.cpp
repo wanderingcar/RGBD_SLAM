@@ -14,17 +14,25 @@ namespace RGBDSLAM
         std::unique_lock<std::mutex> lck(data_mutex_);
         return keyframes_;
     }
-
+    ObjectsType Map::GetALLObjects()
+    {
+        std::unique_lock<std::mutex> lck(data_mutex_);
+        return objects_;
+    }
     LandmarksType Map::GetActiveMapPoints()
     {
         std::unique_lock<std::mutex> lck(data_mutex_);
         return active_landmarks_;
     }
-
     KeyframesType Map::GetActiveKeyFrames()
     {
         std::unique_lock<std::mutex> lck(data_mutex_);
         return active_keyframes_;
+    }
+    ObjectsType Map::GetActiveObjects()
+    {
+        std::unique_lock<std::mutex> lck(data_mutex_);
+        return active_objects_;
     }
 
     void Map::SetWindowSize(int window_size)
@@ -73,6 +81,15 @@ namespace RGBDSLAM
         }
     }
 
+    void Map::InsertObject(std::vector<Object::Ptr> object)
+    {
+        
+        // for(auto &ob : object
+        // {
+
+        // }
+    }
+
     void Map::UpdateActiveMapPoint(int current_frame_id, int window_size)
     {
         int mm = 0;
@@ -94,6 +111,28 @@ namespace RGBDSLAM
 
         // LOG(INFO) << "Deleted active landmarks: " << mm;
     }
+
+    // void Map::UpdateActiveObject(int current_frame_id, std::vector<Object::Ptr> object)
+    // {
+    //     int mm = 0;
+    //     // LOG(INFO) << "Active object size: " << active_objects_.size();
+    //     std::vector<unsigned long> deleted_idx;
+    //     for (auto &mp : active_objects_)
+    //     {
+    //         if ((int)mp.second->id_frame_ <= (int)current_frame_id - (int)window_size)
+    //         {
+    //             deleted_idx.emplace_back(mp.first);
+    //             mm += 1;
+    //         }
+    //     }
+
+    //     for (auto &ii : deleted_idx)
+    //     {
+    //         active_objects_.erase(ii);
+    //     }
+
+    //     // LOG(INFO) << "Deleted active objects: " << mm;
+    // }
 
     void Map::RemoveOldKeyframe()
     {

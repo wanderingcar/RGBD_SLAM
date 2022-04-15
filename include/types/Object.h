@@ -11,6 +11,7 @@ namespace RGBDSLAM
 
     struct Frame;
     struct Feature;
+    struct MapPoint;
 
     struct Object
     {
@@ -21,6 +22,7 @@ namespace RGBDSLAM
         bool is_outlier_ = false;
         Vec3 pos_ = Vec3::Zero(); // Position in world
         Vec3 dim_ = Vec3::Zero(); // Object Size
+        double yaw_ = 0;
         std::vector<double> rgb_;
         std::mutex data_mutex_;
 
@@ -30,6 +32,7 @@ namespace RGBDSLAM
         Object(long id, Vec3 dimension, Vec3 position, double yaw);
 
         Vec3 Pos();
+        Vec3 Dim();
         void SetPos(const Vec3 &pos);
  
         // factory function

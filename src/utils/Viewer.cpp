@@ -111,13 +111,13 @@ namespace RGBDSLAM
         glPopMatrix();
     }
 
-    void Viewer::DrawCuboid(RGBDSLAM::Object object, const float *color)
+    //Draw object 3D bounding box
+    void Viewer::DrawObject(Object::Ptr object, const float *color)
     {
         const float sz = 0.3;
         const int line_width = 2.0;
 
         glPushMatrix();
-        glMultMatrixf((GLfloat *)m.data());
 
         if (color == nullptr)
         {
@@ -130,52 +130,117 @@ namespace RGBDSLAM
         glBegin(GL_LINES);
 
         std::vector<Vec3> p;
+        double cos_=std::cos(object->yaw_);
+        double sin_=std::sin(object->yaw_);
+
         
-        p.emplace_back(Vec3((object.pos_[0]+object.dim_[0]/2.0f)*std::cos(object.yaw_),
-                            (object.pos_[1]+object.dim_[1]/2.0f)*std::sin(object.yaw_),
-                             object.pos_[2]+object.dim_[2]/2.0f)));
-        p.emplace_back(Vec3((object.pos_[0]-object.dim_[0]/2.0f)*std::cos(object.yaw_),
-                            (object.pos_[1]+object.dim_[1]/2.0f)*std::sin(object.yaw_),
-                             object.pos_[2]+object.dim_[2]/2.0f)));
-        p.emplace_back(Vec3((object.pos_[0]-object.dim_[0]/2.0f)*std::cos(object.yaw_),
-                            (object.pos_[1]-object.dim_[1]/2.0f)*std::sin(object.yaw_),
-                             object.pos_[2]+object.dim_[2]/2.0f)));
-        p.emplace_back(Vec3((object.pos_[0]+object.dim_[0]/2.0f)*std::cos(object.yaw_),
-                            (object.pos_[1]-object.dim_[1]/2.0f)*std::sin(object.yaw_),
-                             object.pos_[2]+object.dim_[2]/2.0f)));
-        p.emplace_back(Vec3((object.pos_[0]+object.dim_[0]/2.0f)*std::cos(object.yaw_),
-                            (object.pos_[1]+object.dim_[1]/2.0f)*std::sin(object.yaw_),
-                             object.pos_[2]-object.dim_[2]/2.0f)));
-        p.emplace_back(Vec3((object.pos_[0]-object.dim_[0]/2.0f)*std::cos(object.yaw_),
-                            (object.pos_[1]+object.dim_[1]/2.0f)*std::sin(object.yaw_),
-                             object.pos_[2]-object.dim_[2]/2.0f)));
-        p.emplace_back(Vec3((object.pos_[0]-object.dim_[0]/2.0f)*std::cos(object.yaw_),
-                            (object.pos_[1]-object.dim_[1]/2.0f)*std::sin(object.yaw_),
-                             object.pos_[2]-object.dim_[2]/2.0f))); 
-        p.emplace_back(Vec3((object.pos_[0]+object.dim_[0]/2.0f)*std::cos(object.yaw_),
-                            (object.pos_[1]-object.dim_[1]/2.0f)*std::sin(object.yaw_),
-                             object.pos_[2]-object.dim_[2]/2.0f)));                                         
+        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_,
+        //                     object->pos_[1]+object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]+object->dim_[2]/2.0f));
+        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_,
+        //                     object->pos_[1]+object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]+object->dim_[2]/2.0f));
+        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_,
+        //                     object->pos_[1]-object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]+object->dim_[2]/2.0f));
+        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_,
+        //                     object->pos_[1]-object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]+object->dim_[2]/2.0f));
+        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_,
+        //                     object->pos_[1]+object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]-object->dim_[2]/2.0f));
+        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_,
+        //                     object->pos_[1]+object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]-object->dim_[2]/2.0f));
+        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_,
+        //                     object->pos_[1]-object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]-object->dim_[2]/2.0f)); 
+        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_,
+        //                     object->pos_[1]-object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]-object->dim_[2]/2.0f));                                         
 
-        glVertex3f(p[0]);
-        glVertex3f(p[1]);
-        glVertex3f(p[2]);
-        glVertex3f(p[3]);
-        glVertex3f(p[0]);
 
-        glVertex3f(p[4]);
-        glVertex3f(p[5]);
-        glVertex3f(p[6]);
-        glVertex3f(p[7]);
-        glVertex3f(p[4]);
+        
+        p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
+                            object->pos_[1]+object->dim_[2]/2.0f,
+                             object->pos_[2]+object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
+                            object->pos_[1]+object->dim_[2]/2.0f,
+                             object->pos_[2]+object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
+                            object->pos_[1]+object->dim_[2]/2.0f,
+                             object->pos_[2]-object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
+                            object->pos_[1]+object->dim_[2]/2.0f,
+                             object->pos_[2]-object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
+                            object->pos_[1]-object->dim_[2]/2.0f,
+                             object->pos_[2]+object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
+                            object->pos_[1]-object->dim_[2]/2.0f,
+                             object->pos_[2]+object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
+                            object->pos_[1]-object->dim_[2]/2.0f,
+                             object->pos_[2]-object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
+                            object->pos_[1]-object->dim_[2]/2.0f,
+                             object->pos_[2]-object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_));
+        
 
-        glVertex3f(p[5]);
-        glVertex3f(p[1]);
 
-        glVertex3f(p[2]);
-        glVertex3f(p[6]);
 
-        glVertex3f(p[7]);
-        glVertex3f(p[3]);
+        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]+object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_,
+        //                     -(object->pos_[1]+object->dim_[2]/2.0f)));
+        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]+object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_,
+        //                     -(object->pos_[1]+object->dim_[2]/2.0f)));
+        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]-object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_,
+        //                     -(object->pos_[1]+object->dim_[2]/2.0f)));
+        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]-object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_,
+        //                     -(object->pos_[1]+object->dim_[2]/2.0f)));
+
+        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]+object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_,
+        //                     -(object->pos_[1]-object->dim_[2]/2.0f)));
+        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]+object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_,
+        //                     -(object->pos_[1]-object->dim_[2]/2.0f)));
+        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]-object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_,
+        //                     -(object->pos_[1]-object->dim_[2]/2.0f)));
+        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
+        //                      object->pos_[2]-object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_,
+        //                     -(object->pos_[1]-object->dim_[2]/2.0f)));
+
+
+
+        int i=0;
+
+        for(i=0;i<8;i++)
+        {
+            glVertex3f(p[i][0],p[i][1],p[i][2]);
+        }
+
+        glVertex3f(p[0][0],p[0][1],p[0][2]);
+        glVertex3f(p[3][0],p[3][1],p[3][2]);
+
+        glVertex3f(p[1][0],p[1][1],p[1][2]);
+        glVertex3f(p[2][0],p[2][1],p[2][2]);
+
+        glVertex3f(p[4][0],p[4][1],p[4][2]);
+        glVertex3f(p[7][0],p[7][1],p[7][2]);
+
+        glVertex3f(p[5][0],p[5][1],p[5][2]);
+        glVertex3f(p[6][0],p[6][1],p[6][2]);
+
+        for(i=0;i<4;i++)
+        {
+            glVertex3f(p[i][0],p[i][1],p[i][2]);
+            glVertex3f(p[i+4][0],p[i+4][1],p[i+4][2]);
+        }
 
         glEnd();
         glPopMatrix();
@@ -266,35 +331,6 @@ namespace RGBDSLAM
         glEnd();
     }
 
-    // Object Drawing
-
-    void Viewer::DrawObjects()
-    {
-
-        const float red[3] = {1.0, 0, 0};
-
-        glPointSize(2);
-        glBegin(GL_POINTS);
-        for (auto &landmark : map_->landmarks_)
-        {
-            auto pos = landmark.second->Pos();
-            auto rgb = landmark.second->rgb_;
-            glColor3f(rgb[0] / 255., rgb[1] / 255., rgb[2] / 255.);
-            glVertex3d(pos[0], pos[1], pos[2]);
-        }
-        glEnd();
-
-        glPointSize(2);
-        glBegin(GL_POINTS);
-        for (auto &landmark : map_->active_landmarks_)
-        {
-            auto pos = landmark.second->Pos();
-            glColor3f(red[0], red[1], red[2]);
-            glVertex3d(pos[0], pos[1], pos[2]);
-        }
-        glEnd();
-    }
-
     void Viewer::SpinOnce()
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -307,9 +343,24 @@ namespace RGBDSLAM
 
         const float red[3] = {1.0, 0, 0};
 
+        // //cuboid generation sample
+        // auto new_object = Object::CreateNewObject();
+        // Vec3 point (0.8*0.3, 0.16*0.3, 1.27*0.3);
+        // Vec3 dimensionn (0.2*0.3, 0.25*0.3, 0.42*0.3);
+        // double yaw = -0.7854;
+        // new_object->id_=0;
+        // new_object->dim_=dimensionn;
+        // new_object->pos_=point;
+        // new_object->yaw_=yaw;
+
+        
+
+       
         for (auto &kf : map_->active_keyframes_)
         {
             DrawFrame(kf.second, red);
+            // for(int i=0; i<object_.size();i++)
+            //     DrawObject(object_,red);
         }
 
         DrawTrajectory();
@@ -328,7 +379,6 @@ namespace RGBDSLAM
         cv::waitKey(1);
 
         DrawMapPoints();
-        DrawObjects();
         pangolin::FinishFrame();
     }
 
@@ -340,7 +390,6 @@ namespace RGBDSLAM
 
         const float green[3] = {0.0, 1.0, 0.0};
         std::unique_lock<std::mutex> lock(viewer_data_mutex_);
-
         const float red[3] = {1.0, 0, 0};
         const float blue[3] = {0.0, 0, 1.0};
 

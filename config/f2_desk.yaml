@@ -1,26 +1,52 @@
 %YAML:1.0
 # data
-data_dir: /home/dl/src/RGBD_SLAM/rgbd_dataset_freiburg2_desk/
-association_dir: /home/dl/src/RGBD_SLAM/rgbd_dataset_freiburg2_desk/associations.txt
-voc_dir: /home/dl/src/RGBD_SLAM/orbvoc.dbow3
-est_dir: /home/cadit/src/RGBD_SLAM/result/f2_desk_05/stamped_traj_estimate.txt
+# data_dir: /home/cadit/src/copy/RGBD_SLAM/DATA_FOLDER/
+# association_dir: /home/cadit/src/copy/RGBD_SLAM/DATA_FOLDER/associations.txt
+# voc_dir: /home/cadit/src/copy/RGBD_SLAM/Vocabulary/orbvoc.dbow3
+# est_dir: /home/cadit/src/copy/RGBD_SLAM/result/f2_desk_05/stamped_traj_estimate.txt
+
+
+data_dir: /home/cadit/src/copy/RGBD_SLAM/snu_lib_rect/
+association_dir: /home/cadit/src/copy/RGBD_SLAM/snu_lib_rect/associations.txt
+voc_dir: /home/cadit/src/copy/RGBD_SLAM/Vocabulary/orbvoc.dbow3
+est_dir: /home/cadit/src/copy/RGBD_SLAM/result/f2_desk_05/stamped_traj_estimate.txt
 
 # camera intrinsics
-camera.fx: 520.908620
-camera.fy: 521.007327
-camera.cx: 325.141442
-camera.cy: 249.701764
+# camera.fx: 520.908620
+# camera.fy: 521.007327
+# camera.cx: 325.141442
+# camera.cy: 249.701764
 
-camera.k1: 0.231222
-camera.k2: -0.784899
-camera.p1: -0.003257
-camera.p2: -0.000105
-camera.k3: 0.917205
+# camera.k1: 0.231222
+# camera.k2: -0.784899
+# camera.p1: -0.003257
+# camera.p2: -0.000105
+# camera.k3: 0.917205
+
+# stride: 1
+
+# height: 480
+# width: 640
+
+# loop_detect: 1
+# score_threshold: 0.02
+# rel_pose_thresh: 0.5
+
+camera.fx: 427.976
+camera.fy: 427.976
+camera.cx: 426.355
+camera.cy: 235.98
+
+camera.k1: 0
+camera.k2: 0
+camera.p1: 0
+camera.p2: 0
+camera.k3: 0
 
 stride: 1
 
 height: 480
-width: 640
+width: 848
 
 loop_detect: 1
 score_threshold: 0.02

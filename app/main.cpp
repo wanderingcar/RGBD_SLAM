@@ -59,7 +59,8 @@ int main(int argc, char **argv)
     distCoeffs = (cv::Mat1d(1, 5) << k1, k2, p1, p2, k3);
 
     cv::Mat map1, map2;
-    cv::Size imageSize = cv::Size(640, 480);
+    // cv::Size imageSize = cv::Size(640, 480);
+    cv::Size imageSize = cv::Size(848, 480);
     cv::initUndistortRectifyMap(cameraMatrix, distCoeffs, cv::Mat(), cameraMatrix, imageSize, CV_32FC1, map1, map2);
 
     int max = 0; // Config::Get<int>("nb_img");
@@ -93,8 +94,10 @@ int main(int argc, char **argv)
                     break;
 
                 max += 1;
-                depth_list.emplace_back(association[3]);
-                rgb_list.emplace_back(association[1]);
+                depth_list.emplace_back(association[1]);
+                rgb_list.emplace_back(association[3]);
+                // depth_list.emplace_back(association[3]);
+                // rgb_list.emplace_back(association[1]);
                 stamp.emplace_back(association[0]);
             }
 
@@ -128,7 +131,7 @@ int main(int argc, char **argv)
 
         if (i % stride == 0)
         {
-            // LOG(INFO) << i << "-th image processing...";
+            LOG(INFO) << i << "-th image processing...";
 
             cv::Mat img = cv::imread(data_dir + rgb_list[i], 1);
             cv::Mat gray = cv::imread(data_dir + rgb_list[i], 0);

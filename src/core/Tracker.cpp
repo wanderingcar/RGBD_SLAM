@@ -36,8 +36,10 @@ namespace RGBDSLAM
         switch (status_)
         {
         case TrackerStatus::INITING:
-            RGBDInit();
+        {
+            RGBDInit();        
             break;
+        }
         case TrackerStatus::Tracker_GOOD:
         case TrackerStatus::Tracker_BAD:
             Track();
@@ -190,6 +192,8 @@ namespace RGBDSLAM
                         LOG(INFO) << "Dist: " << RelPose.translation().norm();
                         LOG(INFO) << "Score: " << score;
                         LOG(INFO) << "RELPOSE: " << RelPose.translation()[0] << " / " << RelPose.translation()[1] << " / " << RelPose.translation()[2];
+
+                        //LOG(INFO) << "File name: "<<frame_ref->file_name_ << std::endl;
 
                         std::vector<int> loopIdxs = {kf_id, kf_id_current};
                         loopInfoIdx.emplace_back(loopIdxs);

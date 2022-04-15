@@ -33,6 +33,7 @@ namespace RGBDSLAM
     {
         static long factory_id = 0;
         Object::Ptr new_object(new Object);
+        
         new_object->id_ = factory_id++;
         return new_object;
     }
