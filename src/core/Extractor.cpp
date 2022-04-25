@@ -37,6 +37,8 @@ namespace RGBDSLAM
             int v = (int)kp.pt.x;
             double depth = (double)(frame->depth_.at<float>(kp.pt.y, kp.pt.x));
 
+            // std::cout << kp.pt << std::endl;
+
             std::vector<double> rgb_{frame->rgb_.at<cv::Vec3b>(kp.pt.y, kp.pt.x)[2] / 1.0,
                                      frame->rgb_.at<cv::Vec3b>(kp.pt.y, kp.pt.x)[1] / 1.0,
                                      frame->rgb_.at<cv::Vec3b>(kp.pt.y, kp.pt.x)[0] / 1.0};

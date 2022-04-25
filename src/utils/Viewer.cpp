@@ -75,6 +75,7 @@ namespace RGBDSLAM
         glPushMatrix();
 
         Sophus::Matrix4f m = Twc.matrix().template cast<float>();
+        Sophus::Matrix4d twc = Twc.matrix().template cast<double>();
         glMultMatrixf((GLfloat *)m.data());
 
         if (color == nullptr)
@@ -111,6 +112,49 @@ namespace RGBDSLAM
         glPopMatrix();
     }
 
+
+    // void Viewer::DrawCuboids(cuboid* cuboid_, const float *color)
+    // {
+    //     const float sz = 0.3;
+    //     const int line_width = 2.0;
+
+    //     Eigen::MatrixXd all_edge_pt_ids, front_edge_pt_ids;
+    //     all_edge_pt_ids.resize(8, 2); // draw 8 edges except front face
+	//     all_edge_pt_ids << 2, 3, 3, 4, 4, 1, 3, 7, 4, 8, 6, 7, 7, 8, 8, 5;
+    //     all_edge_pt_ids.array() -= 1;
+    //     front_edge_pt_ids.resize(4,2);
+    //     front_edge_pt_ids << 1, 2, 2, 6, 6, 5, 5, 1;
+    //     front_edge_pt_ids.array() -= 1;
+        
+    //     Eigen::MatrixXd cube_corners;
+    //     cube_corners=cuboid_->box_corners_3d_world;
+    //     std::cout<<cube_corners<<std::endl;
+    //     glPushMatrix();
+        
+    //     if (color == nullptr)
+    //     {
+    //         glColor3f(1, 0, 0);
+    //     }
+    //     else
+    //         glColor3f(color[0], color[1], color[2]);
+        
+    //     glLineWidth(line_width);
+    //     glBegin(GL_LINES);
+
+    //     for (int line_id = 0; line_id < all_edge_pt_ids.rows(); line_id++)
+	// 	{
+	// 		glVertex3f(cube_corners(0, all_edge_pt_ids(line_id, 0)), cube_corners(1, all_edge_pt_ids(line_id, 0)), cube_corners(2, all_edge_pt_ids(line_id, 0)));
+	// 		glVertex3f(cube_corners(0, all_edge_pt_ids(line_id, 1)), cube_corners(1, all_edge_pt_ids(line_id, 1)), cube_corners(2, all_edge_pt_ids(line_id, 1)));
+	// 	}
+    //     for (int line_id = 0; line_id < front_edge_pt_ids.rows(); line_id++)
+	// 	{
+	// 		glVertex3f(cube_corners(0, front_edge_pt_ids(line_id, 0)), cube_corners(1, front_edge_pt_ids(line_id, 0)), cube_corners(2, front_edge_pt_ids(line_id, 0)));
+	// 		glVertex3f(cube_corners(0, front_edge_pt_ids(line_id, 1)), cube_corners(1, front_edge_pt_ids(line_id, 1)), cube_corners(2, front_edge_pt_ids(line_id, 1)));
+	// 	}
+	// 	glEnd();
+    //     glPopMatrix();
+    // }
+
     //Draw object 3D bounding box
     void Viewer::DrawObject(Object::Ptr object, const float *color)
     {
@@ -134,87 +178,30 @@ namespace RGBDSLAM
         double sin_=std::sin(object->yaw_);
 
         
-        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_,
-        //                     object->pos_[1]+object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]+object->dim_[2]/2.0f));
-        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_,
-        //                     object->pos_[1]+object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]+object->dim_[2]/2.0f));
-        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_,
-        //                     object->pos_[1]-object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]+object->dim_[2]/2.0f));
-        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_,
-        //                     object->pos_[1]-object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]+object->dim_[2]/2.0f));
-        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_,
-        //                     object->pos_[1]+object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]-object->dim_[2]/2.0f));
-        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_,
-        //                     object->pos_[1]+object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]-object->dim_[2]/2.0f));
-        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_,
-        //                     object->pos_[1]-object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]-object->dim_[2]/2.0f)); 
-        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_,
-        //                     object->pos_[1]-object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]-object->dim_[2]/2.0f));                                         
-
-
-        
-        p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
-                            object->pos_[1]+object->dim_[2]/2.0f,
-                             object->pos_[2]+object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_));
-        p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
-                            object->pos_[1]+object->dim_[2]/2.0f,
-                             object->pos_[2]+object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_));
-        p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
-                            object->pos_[1]+object->dim_[2]/2.0f,
-                             object->pos_[2]-object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_));
-        p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
-                            object->pos_[1]+object->dim_[2]/2.0f,
-                             object->pos_[2]-object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_));
-        p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
-                            object->pos_[1]-object->dim_[2]/2.0f,
-                             object->pos_[2]+object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_));
-        p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
-                            object->pos_[1]-object->dim_[2]/2.0f,
-                             object->pos_[2]+object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_));
-        p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
-                            object->pos_[1]-object->dim_[2]/2.0f,
-                             object->pos_[2]-object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_));
-        p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
-                            object->pos_[1]-object->dim_[2]/2.0f,
-                             object->pos_[2]-object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_));
-        
-
-
-
-        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]+object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_,
-        //                     -(object->pos_[1]+object->dim_[2]/2.0f)));
-        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]+object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_,
-        //                     -(object->pos_[1]+object->dim_[2]/2.0f)));
-        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]-object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_,
-        //                     -(object->pos_[1]+object->dim_[2]/2.0f)));
-        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]-object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_,
-        //                     -(object->pos_[1]+object->dim_[2]/2.0f)));
-
-        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]+object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_,
-        //                     -(object->pos_[1]-object->dim_[2]/2.0f)));
-        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_+object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]+object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_,
-        //                     -(object->pos_[1]-object->dim_[2]/2.0f)));
-        // p.emplace_back(Vec3(object->pos_[0]-object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]-object->dim_[1]/2.0f*cos_+object->dim_[0]/2.0f*sin_,
-        //                     -(object->pos_[1]-object->dim_[2]/2.0f)));
-        // p.emplace_back(Vec3(object->pos_[0]+object->dim_[0]/2.0f*cos_-object->dim_[1]/2.0f*sin_,
-        //                      object->pos_[2]-object->dim_[1]/2.0f*cos_-object->dim_[0]/2.0f*sin_,
-        //                     -(object->pos_[1]-object->dim_[2]/2.0f)));
-
+        p.emplace_back(Vec3(sz*object->pos_[0]+sz*object->dim_[0]/2.0f*cos_+sz*object->dim_[1]/2.0f*sin_,
+                            sz*object->pos_[1]+sz*object->dim_[2]/2.0f,
+                             sz*object->pos_[2]+sz*object->dim_[1]/2.0f*cos_-sz*object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(sz*object->pos_[0]-sz*object->dim_[0]/2.0f*cos_+sz*object->dim_[1]/2.0f*sin_,
+                            sz*object->pos_[1]+sz*object->dim_[2]/2.0f,
+                             sz*object->pos_[2]+sz*object->dim_[1]/2.0f*cos_+sz*object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(sz*object->pos_[0]-sz*object->dim_[0]/2.0f*cos_-sz*object->dim_[1]/2.0f*sin_,
+                            sz*object->pos_[1]+sz*object->dim_[2]/2.0f,
+                             sz*object->pos_[2]-sz*object->dim_[1]/2.0f*cos_+sz*object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(sz*object->pos_[0]+sz*object->dim_[0]/2.0f*cos_-sz*object->dim_[1]/2.0f*sin_,
+                            sz*object->pos_[1]+sz*object->dim_[2]/2.0f,
+                             sz*object->pos_[2]-sz*object->dim_[1]/2.0f*cos_-sz*object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(sz*object->pos_[0]+sz*object->dim_[0]/2.0f*cos_+sz*object->dim_[1]/2.0f*sin_,
+                            sz*object->pos_[1]-sz*object->dim_[2]/2.0f,
+                             sz*object->pos_[2]+sz*object->dim_[1]/2.0f*cos_-sz*object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(sz*object->pos_[0]-sz*object->dim_[0]/2.0f*cos_+sz*object->dim_[1]/2.0f*sin_,
+                            sz*object->pos_[1]-sz*object->dim_[2]/2.0f,
+                             sz*object->pos_[2]+sz*object->dim_[1]/2.0f*cos_+sz*object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(sz*object->pos_[0]-sz*object->dim_[0]/2.0f*cos_-sz*object->dim_[1]/2.0f*sin_,
+                            sz*object->pos_[1]-sz*object->dim_[2]/2.0f,
+                             sz*object->pos_[2]-sz*object->dim_[1]/2.0f*cos_+sz*object->dim_[0]/2.0f*sin_));
+        p.emplace_back(Vec3(sz*object->pos_[0]+sz*object->dim_[0]/2.0f*cos_-sz*object->dim_[1]/2.0f*sin_,
+                            sz*object->pos_[1]-sz*object->dim_[2]/2.0f,
+                             sz*object->pos_[2]-sz*object->dim_[1]/2.0f*cos_-sz*object->dim_[0]/2.0f*sin_));
 
 
         int i=0;
@@ -337,30 +324,27 @@ namespace RGBDSLAM
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         vis_display.Activate(vis_camera);
 
+        // Object::Ptr object = Object::CreateNewObject();
+        // object->pos_=Vec3(0.8, 0.16, 1.27);
+        // object->dim_=Vec3(0.25, 0.2, 0.42);
+        // object->yaw_=-0.7854;
+
+
         const float green[3] = {0.0, 1.0, 0.0};
         const float black[3] = {0.0, 0.0, 0.0};
         std::unique_lock<std::mutex> lock(viewer_data_mutex_);
 
         const float red[3] = {1.0, 0, 0};
-
-        // //cuboid generation sample
-        // auto new_object = Object::CreateNewObject();
-        // Vec3 point (0.8*0.3, 0.16*0.3, 1.27*0.3);
-        // Vec3 dimensionn (0.2*0.3, 0.25*0.3, 0.42*0.3);
-        // double yaw = -0.7854;
-        // new_object->id_=0;
-        // new_object->dim_=dimensionn;
-        // new_object->pos_=point;
-        // new_object->yaw_=yaw;
-
-        
-
        
+        // DrawObject(object, red);
+
         for (auto &kf : map_->active_keyframes_)
         {
             DrawFrame(kf.second, red);
-            // for(int i=0; i<object_.size();i++)
-            //     DrawObject(object_,red);
+            // for(int obj_id=0;obj_id<kf.second->frames_cuboids.size();obj_id++)
+            //     DrawCuboids(kf.second->frames_cuboids[obj_id][0],red);
+            for(auto& obj : kf.second->object_)
+                DrawObject(obj,red);
         }
 
         DrawTrajectory();

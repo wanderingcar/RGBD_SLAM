@@ -16,6 +16,11 @@
 
 #include <pangolin/pangolin.h>
 
+// #include <Eigen/Dense>
+// #include <Eigen/Core>
+
+// #include "include/cuboid_detection/detect_3d_cuboid.h"
+
 using namespace RGBDSLAM;
 
 std::vector<std::string> split(std::string input, char delimiter)
@@ -36,6 +41,7 @@ int main(int argc, char **argv)
 {
 
     std::string config_file_path_ = "../config/f2_desk.yaml";
+    // std::string base_folder = "/home/cadit/src/copy/RGBD_SLAM/DATA_FOLDER/keyframe_set_annotated/obj_train_data";
 
     // Initialize detector, descriptor extractor, the number of features to extract
 
@@ -105,7 +111,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            std::cout << "file open fail" << std::endl;
+            std::cerr << "file open fail" << std::endl;
         }
     }
 
@@ -131,7 +137,7 @@ int main(int argc, char **argv)
 
         if (i % stride == 0)
         {
-            LOG(INFO) << i << "-th image processing...";
+            //LOG(INFO) << i << "-th image processing...";
 
             cv::Mat img = cv::imread(data_dir + rgb_list[i], 1);
             cv::Mat gray = cv::imread(data_dir + rgb_list[i], 0);

@@ -9,6 +9,7 @@
 #include "types/MapPoint.h"
 #include "types/Object.h"
 #include "DBoW3/DBoW3.h"
+#include "detect_3d_cuboid/detect_3d_cuboid.h"
 #include <opencv2/features2d.hpp>
 
 namespace RGBDSLAM
@@ -43,6 +44,9 @@ namespace RGBDSLAM
         DBoW3::BowVector BoW_vec;
 
         std::vector<std::shared_ptr<Feature>> features_;
+
+        std::vector<ObjectSet> frames_cuboids;
+        std::vector<Object::Ptr> object_;
 
         // triangle pathces
 

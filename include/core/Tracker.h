@@ -19,6 +19,7 @@
 #include "core/Matcher.h"
 #include "core/Extractor.h"
 #include "core/Optimizer.h"
+#include "core/Detector.h"
 
 #include "utils/Viewer.h"
 
@@ -27,6 +28,8 @@
 #include "types/Frame.h"
 #include "types/Object.h"
 #include "types/Map.h"
+
+
 
 namespace RGBDSLAM
 {
@@ -111,6 +114,7 @@ namespace RGBDSLAM
         Matcher::Ptr matcher_;
         Extractor::Ptr extractor_;
         Optimizer::Ptr optimizer_;
+        Detector::Ptr detector_;
         // PoseGraphOptimizer::Ptr pose_graph_optimizer_;
 
         int window_size_ = 5;

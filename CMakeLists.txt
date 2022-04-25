@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 project(rgbd_slam)
 
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
 
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall")
 set(CMAKE_CXX_FLAGS_RELEASE  "-std=c++14 -O3 -fopenmp -pthread")
@@ -56,6 +56,17 @@ include_directories(${PCL_INCLUDE_DIRS})
 
 include_directories(${PROJECT_SOURCE_DIR})
 
+#catkin
+find_package(catkin REQUIRED COMPONENTS
+  cmake_modules
+  roscpp
+  roslib
+#  tictoc_profiler
+)
+include_directories(${catkin_INCLUDE_DIRS})
+
+
+
 # #${Pangolin_LIBRARIES} GL GLU GLEW glut
 set(THIRD_PARTY_LIBS
         ${OpenCV_LIBS}
@@ -69,8 +80,10 @@ set(THIRD_PARTY_LIBS
         ${Pangolin_LIBRARIES}
         ${DBoW3_LIBS}
         #${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2/lib/libDBoW2.so
+        ${catkin_LIBRARIES}
         )
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include/yolov3)
 add_subdirectory(src)
 add_subdirectory(app)

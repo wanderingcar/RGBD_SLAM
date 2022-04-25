@@ -81,13 +81,20 @@ namespace RGBDSLAM
         }
     }
 
-    void Map::InsertObject(std::vector<Object::Ptr> object)
+    void Map::InsertObject(Object::Ptr object)
     {
-        
-        // for(auto &ob : object
-        // {
-
-        // }
+        if(objects_.find(object->id_)==objects_.end())
+        {
+            objects_.insert(make_pair(object->id_,object));
+            active_objects_.insert(make_pair(object->id_,object));
+        }
+        else
+        {
+            if (active_objects_.find(object->id_)==active_objects_.end())
+            {
+                active_objects_.insert(make_pair(object->id_,object));
+            }
+        }
     }
 
     void Map::UpdateActiveMapPoint(int current_frame_id, int window_size)

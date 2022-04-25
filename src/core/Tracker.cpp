@@ -1,5 +1,6 @@
 #include "core/Tracker.h"
 
+
 namespace RGBDSLAM
 {
 
@@ -75,7 +76,10 @@ namespace RGBDSLAM
             std::vector<std::vector<int>> loopInfoIdx;
             std::vector<SE3> loopInfoRelPose;
 
+
             InsertKeyframe();
+
+            detector_->DetectObject(map_->current_keyframe_);
 
             if (loop_detect_)
             {
@@ -116,7 +120,29 @@ namespace RGBDSLAM
                     }
                 }
             }
+            cv::imwrite(std::to_string(current_frame_->keyframe_id_) + ".png", current_frame_->rgb_);
+            LOG(INFO) << "Keyframe Image Saved";
+
+            // SE3 pose_inverse=current_frame_->pose_.inverse();
+            // Matrix4d C2W;
+            // // for(int i=0;i<4;i++)
+            // // {
+            // //     for(int j=0;j<4;j++)
+            // //         //C2W(i,j)=pose_inverse;
+            // // }
+
+            // detect_cuboid_obj = get_cuboid(current_frame_ -> K_, C2W , current_frame_ -> keyframe_id_);
+
         }
+
+        // else {
+        // cv::Mat nullMat;
+        // current_frame_->rgb_ = nullMat;
+        // current_frame_->gray_ = nullMat;
+        // current_frame_->depth_ = nullMat;
+        // }
+
+        
 
         if (viewer_)
         {

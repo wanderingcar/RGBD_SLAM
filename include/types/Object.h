@@ -20,9 +20,11 @@ namespace RGBDSLAM
         typedef std::shared_ptr<Object> Ptr;
         unsigned long id_ = 0; // ID
         bool is_outlier_ = false;
+        int label = 0;
         Vec3 pos_ = Vec3::Zero(); // Position in world
         Vec3 dim_ = Vec3::Zero(); // Object Size
         double yaw_ = 0;
+        Eigen::MatrixXd all_corners;
         std::vector<double> rgb_;
         std::mutex data_mutex_;
 

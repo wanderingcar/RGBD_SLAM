@@ -11,7 +11,7 @@ namespace RGBDSLAM
 {
     typedef std::unordered_map<unsigned long, MapPoint::Ptr> LandmarksType; // id and class (hash)
     typedef std::unordered_map<unsigned long, Frame::Ptr> KeyframesType;    // id and class (hash)
-    typedef std::unordered_map<unsigned long, std::vector<Object::Ptr>> ObjectsType;     // id and class (hash)
+    typedef std::unordered_map<unsigned long, Object::Ptr> ObjectsType;     // id and class (hash)
 
     class Map
     {
@@ -31,7 +31,7 @@ namespace RGBDSLAM
 
         void InsertKeyFrame(Frame::Ptr frame);
         void InsertMapPoint(MapPoint::Ptr map_point);
-        void InsertObject(std::vector<Object::Ptr> object);
+        void InsertObject(Object::Ptr object);
         void UpdateActiveMapPoint(int current_frame_id, int window_size);
         // void UpdateActiveObject(int current_frame_id, std::vector<Object::Ptr> object);
         void RemoveOldKeyframe();
